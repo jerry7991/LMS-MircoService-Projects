@@ -57,7 +57,7 @@ class BookControllersTest {
 	void saveBookShouldSaveBookWithOkStatus() throws Exception {
 		BookDto bookDto = new BookDto(1, "", "", "");
 		mockMvc.perform(MockMvcRequestBuilders.post("/books/add").content(asJsonString(bookDto))
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
 	}
 
 	@Test

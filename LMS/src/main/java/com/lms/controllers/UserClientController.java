@@ -79,5 +79,4 @@ public class UserClientController {
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 		return restTemplate.exchange(usersUri + "/" + userName, HttpMethod.PUT, entity, String.class).getBody();
 	}
-
 }

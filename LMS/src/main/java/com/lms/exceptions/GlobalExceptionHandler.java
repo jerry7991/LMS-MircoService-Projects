@@ -14,6 +14,8 @@ import org.springframework.web.method.HandlerMethod;
 
 import com.lms.util.Constants;
 
+import feign.FeignException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -25,7 +27,7 @@ public class GlobalExceptionHandler {
 		response.put(Constants.SERVICE, handlerMethod.getMethod().getDeclaringClass());
 		response.put(Constants.TIME_STAMP, new Date().toString());
 		response.put(Constants.ERROR, bookAlreadyIssuedException.getMessage());
-		response.put(Constants.STATUS, HttpStatus.NOT_FOUND.name());
+		response.put(Constants.STATUS, HttpStatus.CONFLICT.name());
 		return response;
 	}
 
@@ -43,7 +45,16 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(HttpClientErrorException.class)
 	public ResponseEntity<String> preValidateControllers(HttpClientErrorException ex) {
-
 		return ResponseEntity.status(ex.getStatusCode()).body(ex.getResponseBodyAsString());
+	}
+
+	@ExceptionHandler(FeignException.class)
+	public Map<String, Object> feignHandler(FeignException exception, HandlerMethod handlerMethod) {
+		Map<String, Object> response = new HashMap<>();
+		response.put(Constants.SERVICE, handlerMethod.getMethod().getDeclaringClass());
+		response.put(Constants.TIME_STAMP, new Date().toString());
+		response.put(Constants.ERROR, exception.getMessage());
+		response.put(Constants.STATUS, exception.status());
+		return response;
 	}
 }

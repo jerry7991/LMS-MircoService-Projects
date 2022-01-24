@@ -21,33 +21,37 @@ import com.lms.book.exceptions.DuplicateBookException;
 
 @RestController
 @RequestMapping("/books")
-@ResponseStatus(HttpStatus.OK)
 public class BookControllers {
 
 	@Autowired
 	BookServices bookServices;
 
 	@GetMapping("/")
+	@ResponseStatus(HttpStatus.OK)
 	public List<BookDto> getAllBooks() {
 		return bookServices.getAllBooks();
 	}
 
 	@GetMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
 	public BookDto findById(@PathVariable Integer id) throws BookNotFoundException {
 		return bookServices.findById(id);
 	}
 
-	@PostMapping("/add")
+	@PostMapping("/")
+	@ResponseStatus(HttpStatus.CREATED)
 	public BookDto addBook(@RequestBody BookDto bookDto) throws DuplicateBookException {
 		return bookServices.addBook(bookDto);
 	}
 
 	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
 	public Boolean deleteById(@PathVariable Integer id) throws BookNotFoundException {
 		return bookServices.deleteById(id);
 	}
 
 	@PutMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
 	public BookDto updateBook(@PathVariable Integer id, @RequestBody BookDto bookDto) throws BookNotFoundException {
 		return bookServices.updateBook(id, bookDto);
 	}

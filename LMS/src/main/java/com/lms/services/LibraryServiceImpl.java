@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lms.api.LibraryService;
-import com.lms.api.UserServices;
 import com.lms.dto.LibraryDto;
 import com.lms.entity.Library;
 import com.lms.exceptions.BookAlreadyIssuedException;
@@ -25,15 +24,13 @@ public class LibraryServiceImpl implements LibraryService {
 	@Autowired
 	ModelMapper modelMapper;
 
-	@Autowired
-	UserServices userServices;
-
 	@Override
 	public LibraryDto issueBookToUser(LibraryDto libraryDto)
 			throws BookAlreadyIssuedException, IssuedBookOutOfBoundException {
-		if (libraryRepository.countByBookId(libraryDto.getBookId()).compareTo(BigInteger.valueOf(0)) > 0) {
+		if (libraryRepository.findByBookId(libraryDto.getBookId()).isPresent()) {
 			throw new BookAlreadyIssuedException("Book is already issued with other users.");
 		}
+
 		if (libraryRepository.countByUserName(libraryDto.getUserName()).compareTo(BigInteger.valueOf(2)) > 0) {
 			throw new IssuedBookOutOfBoundException("User can get atmost 3 book from library at any time.");
 		}

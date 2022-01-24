@@ -27,30 +27,31 @@ public class UserControllers {
 	UserServices userService;
 
 	@GetMapping("/")
+	@ResponseStatus(HttpStatus.OK)
 	public List<UserDto> findAllUser() {
 		return userService.findAllUser();
 	}
 
-	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{userName}")
+	@ResponseStatus(HttpStatus.OK)
 	public UserDto findByUserName(@PathVariable String userName) throws UserNotFoundException {
 		return userService.findByUserName(userName);
 	}
 
-	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/add")
+	@ResponseStatus(HttpStatus.OK)
 	public UserDto addUser(@RequestBody UserDto userDto) throws DuplicateUserException {
 		return userService.addUser(userDto);
 	}
 
-	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping("/{userName}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public boolean deleteByName(@PathVariable String userName) throws UserNotFoundException {
 		return userService.deleteByName(userName);
 	}
 
-	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/{userName}")
+	@ResponseStatus(HttpStatus.OK)
 	public UserDto updateUser(@PathVariable String userName, @RequestBody UserDto userDto)
 			throws UserNotFoundException, DuplicateUserException {
 		return userService.updateUser(userName, userDto);
