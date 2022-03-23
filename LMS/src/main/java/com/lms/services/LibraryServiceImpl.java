@@ -34,6 +34,7 @@ public class LibraryServiceImpl implements LibraryService {
 		if (libraryRepository.countByUserName(libraryDto.getUserName()).compareTo(BigInteger.valueOf(2)) > 0) {
 			throw new IssuedBookOutOfBoundException("User can get atmost 3 book from library at any time.");
 		}
+
 		Library newData = modelMapper.map(libraryDto, Library.class);
 		return modelMapper.map(libraryRepository.save(newData), LibraryDto.class);
 	}
